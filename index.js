@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri =
   'mongodb://crudServer:8by0Q5mVjdK14JPN@ac-fylx1fh-shard-00-00.sflwpyz.mongodb.net:27017,ac-fylx1fh-shard-00-01.sflwpyz.mongodb.net:27017,ac-fylx1fh-shard-00-02.sflwpyz.mongodb.net:27017/?ssl=true&replicaSet=atlas-ias9m9-shard-0&authSource=admin&appName=Cluster0';
@@ -34,7 +34,12 @@ async function run() {
     });
 
     app.get('/users/:id', async (req, res) => {
-      
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id)
+      }
+      const user = await userCollection.findOne(query);
+      res.send(user);
     })
 
     await client.db('admin').command({ ping: 1 });
