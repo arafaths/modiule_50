@@ -42,6 +42,13 @@ async function run() {
       res.send(user);
     })
 
+    // ADD user
+    app.post('/users', async (req, res) => {
+      const doc = req.body;
+      const result = await userCollection.insertOne(doc);
+      res.send(result);
+    })
+
     // DELETE user
     app.delete('/users/:id', async (req, res) => {
       const id = req.params.id;
